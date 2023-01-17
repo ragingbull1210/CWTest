@@ -20,7 +20,7 @@ function App() {
 
         <ul>
           {products.map((product: any) => (
-            <li>{product.name}</li>
+            <li key={product.id}>{product.name}</li>
           ))}
         </ul>
       </header>
