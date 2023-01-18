@@ -19,11 +19,13 @@ import ActionButton from "./ActionButton";
 interface ProductsTableProps {
   products: Product[];
   productsPerPage: number;
+  handleSelectedProduct: (id: string) => void;
 }
 
 export default function ProductsTable({
   products,
   productsPerPage,
+  handleSelectedProduct,
 }: ProductsTableProps) {
   const [page, setPage] = useState<number>(0);
 
@@ -71,7 +73,11 @@ export default function ProductsTable({
               >
                 <TableCell>{product.name}</TableCell>
                 <TableCell>
-                  <ActionButton color="info" name="Edit" />
+                  <ActionButton
+                    color="info"
+                    name="Edit"
+                    onClick={() => handleSelectedProduct(product.id)}
+                  />
                 </TableCell>
                 <TableCell>
                   <ActionButton color="error" name="Delete" />

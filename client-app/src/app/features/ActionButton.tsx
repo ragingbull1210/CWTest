@@ -12,15 +12,25 @@ interface ActionButtonProps {
     | undefined;
   name: string;
   marginTop?: number;
+  onClick?: () => void;
+  type?: "button" | "submit" | "reset" | undefined;
 }
 
 export default function ActionButton({
   color,
   name,
   marginTop,
+  onClick,
+  type,
 }: ActionButtonProps) {
   return (
-    <Button variant="contained" color={color} sx={{ mt: marginTop }}>
+    <Button
+      variant="contained"
+      color={color}
+      sx={{ mt: marginTop }}
+      onClick={onClick}
+      type={type}
+    >
       {name}
     </Button>
   );
