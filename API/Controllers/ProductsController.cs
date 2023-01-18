@@ -1,8 +1,6 @@
-﻿using Application.Activities;
+﻿using Application.Products;
 using Domain;
-using MediatR;
 using Microsoft.AspNetCore.Mvc;
-
 
 namespace API.Controllers
 {
@@ -17,7 +15,7 @@ namespace API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Product>> GetActivity(Guid id)
         {
-            return Ok();
+            return await Mediator.Send(new Details.Query { Id = id});
         }
     }
 }

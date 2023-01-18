@@ -1,4 +1,4 @@
-using Application.Activities;
+using Application.Products;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
