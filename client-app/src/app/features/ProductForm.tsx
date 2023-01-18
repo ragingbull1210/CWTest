@@ -18,13 +18,14 @@ export default function ProductForm({
     id: "",
     name: "",
     price: 0.0,
-    type: "",
+    type: "Books",
     active: false,
   };
 
   const [product, setProduct] = useState(initialState);
 
-  const handleSubmit = () => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     console.log(product);
     handleCreateOrEditProduct(product);
   };
@@ -104,9 +105,6 @@ export default function ProductForm({
               onChange={handleInputChange}
               value={product.type}
             >
-              <option value="Please select" disabled>
-                Please select
-              </option>
               <option value="Books">Books</option>
               <option value="Electronics">Electronics</option>
               <option value="Food">Food</option>
@@ -125,6 +123,7 @@ export default function ProductForm({
               id="active"
               name="active"
               checked={product.active}
+              value={product.active ? 1 : 0}
               onChange={handleInputChange}
             />
           </div>
@@ -140,6 +139,7 @@ export default function ProductForm({
           />
         </div>
       </form>
+      
     </Container>
   );
 }

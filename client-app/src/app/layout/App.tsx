@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { Product } from "../../models/product";
 import ResponsiveAppBar from "./AppBar";
 import ProductDashboard from "../features/ProductDashboard";
 import { v4 as uuid } from "uuid";
+import agent from "../api/agent";
+import LoadingComponent from "./LoadingComponent";
 
 function App() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -11,14 +12,13 @@ function App() {
     undefined
   );
   const [editMode, setEditMode] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    axios
-      .get<Product[]>("http://localhost:5000/api/products")
-      .then((response) => {
-        console.log(response);
-        setProducts(response.data);
-      });
+    agent.Products.list().then((response) => {
+      setProducts(response);
+      setLoading(false);
+    });
   }, []);
 
   const handleSelectedProduct = (id: string) => {
@@ -39,6 +39,7 @@ function App() {
   };
 
   const handleCreateOrEditProduct = (product: Product) => {
+    product.active = Boolean(product.active);
     product.id
       ? setProducts([...products.filter((p) => p.id !== product.id), product])
       : setProducts([...products, { ...product, id: uuid() }]);
@@ -49,6 +50,8 @@ function App() {
   const handleDeleteProduct = (id: string) => {
     setProducts([...products.filter((p) => p.id !== id)]);
   };
+
+  if (loading) return <LoadingComponent />;
 
   return (
     <>

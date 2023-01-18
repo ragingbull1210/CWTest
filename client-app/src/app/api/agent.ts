@@ -1,18 +1,36 @@
 import axios, { AxiosResponse } from "axios";
+import { Product } from "../../models/product";
+
+const sleep = (delay: number) => {
+    return new Promise((resolve) => {
+        setTimeout(resolve, delay);
+    })
+}
 
 axios.defaults.baseURL = "http://localhost:5000/api";
 
-const responseBody = (response: AxiosResponse) => response.data;
+axios.interceptors.response.use(async (response) => {
+  try {
+    await sleep(1000);
+    return response;
+  } catch (error) {
+    console.log(error);
+    return await Promise.reject(error);
+  }
+});
+
+const responseBody = <T>(response: AxiosResponse<T>) => response.data;
 
 const requests = {
-  get: (url: string) => axios.get(url).then(responseBody),
-  post: (url: string, body: {}) => axios.get(url, body).then(responseBody),
-  put: (url: string, body: {}) => axios.get(url, body).then(responseBody),
-  del: (url: string) => axios.get(url).then(responseBody),
+  get: <T>(url: string) => axios.get<T>(url).then(responseBody),
+  post: <T>(url: string, body: {}) =>
+    axios.post<T>(url, body).then(responseBody),
+  put: <T>(url: string, body: {}) => axios.put<T>(url, body).then(responseBody),
+  del: <T>(url: string) => axios.delete<T>(url).then(responseBody),
 };
 
 const Products = {
-  list: () => requests.get("/products"),
+  list: () => requests.get<Product[]>("/products"),
 };
 
 const agent = {

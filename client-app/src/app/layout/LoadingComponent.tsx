@@ -1,0 +1,21 @@
+import React from "react";
+import {
+  autocompleteClasses,
+  CircularProgress,
+  Container,
+} from "@mui/material";
+
+export default function LoadingComponent() {
+  return (
+    <Container
+      sx={{
+        mt: 50,
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <CircularProgress />
+    </Container>
+  );
+}
