@@ -1,7 +1,6 @@
-import { Button, CircularProgress, Container } from "@mui/material";
+import { Container } from "@mui/material";
 import { ChangeEvent, useState } from "react";
 import { Product } from "../../models/product";
-import LoadingComponent from "../layout/LoadingComponent";
 import ActionButton from "./ActionButton";
 import { LoadingButton } from "@mui/lab";
 

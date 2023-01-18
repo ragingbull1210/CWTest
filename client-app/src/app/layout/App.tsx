@@ -5,9 +5,10 @@ import ProductDashboard from "../features/ProductDashboard";
 import { v4 as uuid } from "uuid";
 import agent from "../api/agent";
 import LoadingComponent from "./LoadingComponent";
-import { LocalActivity } from "@mui/icons-material";
+import { useStore } from "../stores/store";
 
 function App() {
+  const { productStore } = useStore();
   const [products, setProducts] = useState<Product[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<Product | undefined>(
     undefined
@@ -73,6 +74,7 @@ function App() {
 
   return (
     <>
+      <h2>{productStore.title}</h2>
       <ResponsiveAppBar pages={["+ Add Product"]} />
       <ProductDashboard
         products={products}
