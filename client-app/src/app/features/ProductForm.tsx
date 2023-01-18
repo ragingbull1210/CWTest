@@ -1,4 +1,5 @@
 import { Container } from "@mui/material";
+import { ChangeEvent, useState } from "react";
 import { Product } from "../../models/product";
 import ActionButton from "./ActionButton";
 
@@ -7,7 +8,32 @@ interface Props {
   product: Product | undefined;
 }
 
-export default function ProductForm({ handleFormClose, product }: Props) {
+export default function ProductForm({
+  handleFormClose,
+  product: selectedProduct,
+}: Props) {
+  const initialState = selectedProduct ?? {
+    id: "",
+    name: "",
+    price: "",
+    type: "",
+    active: "false",
+  };
+
+  const [product, setProduct] = useState(initialState);
+
+  const handleSubmit = () => {
+    console.log(product);
+    debugger;
+  };
+
+  const handleInputChange = (
+    event: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = event.target;
+    setProduct({ ...product, [name]: value });
+  };
+
   return (
     <Container>
       {/* <Box
@@ -33,7 +59,7 @@ export default function ProductForm({ handleFormClose, product }: Props) {
         <ActionButton color="secondary" name="Cancel" />
       </Box> */}
 
-      <form>
+      <form onSubmit={handleSubmit}>
         <div>
           <div>
             <label htmlFor="name">Product Name</label>
@@ -44,6 +70,7 @@ export default function ProductForm({ handleFormClose, product }: Props) {
               id="name"
               name="name"
               placeholder="Product Name"
+              onChange={handleInputChange}
             />
           </div>
         </div>
@@ -52,7 +79,14 @@ export default function ProductForm({ handleFormClose, product }: Props) {
             <label htmlFor="price">Price</label>
           </div>
           <div>
-            <input type="number" id="price" name="price" placeholder="Price" />
+            <input
+              type="number"
+              id="price"
+              name="price"
+              step=".01"
+              placeholder="Price"
+              onChange={handleInputChange}
+            />
           </div>
         </div>
         <div>
@@ -60,7 +94,15 @@ export default function ProductForm({ handleFormClose, product }: Props) {
             <label htmlFor="type">Type</label>
           </div>
           <div>
-            <select id="type" name="type">
+            <select
+              id="type"
+              name="type"
+              onChange={handleInputChange}
+              defaultValue="Please select"
+            >
+              <option value="Please select" disabled>
+                Please select
+              </option>
               <option value="Books">Books</option>
               <option value="Electronics">Electronics</option>
               <option value="Food">Food</option>
@@ -74,7 +116,13 @@ export default function ProductForm({ handleFormClose, product }: Props) {
             <label htmlFor="active">Active</label>
           </div>
           <div>
-            <input type="checkbox" id="active" name="active" />
+            <input
+              type="checkbox"
+              id="active"
+              name="active"
+              value="true"
+              onChange={handleInputChange}
+            />
           </div>
         </div>
         <br />
