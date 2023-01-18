@@ -2,9 +2,9 @@ import axios, { AxiosResponse } from "axios";
 import { Product } from "../../models/product";
 
 const sleep = (delay: number) => {
-    return new Promise((resolve) => {
-        setTimeout(resolve, delay);
-    })
+  return new Promise((resolve) => {
+    setTimeout(resolve, delay);
+  })
 }
 
 axios.defaults.baseURL = "http://localhost:5000/api";
@@ -31,6 +31,11 @@ const requests = {
 
 const Products = {
   list: () => requests.get<Product[]>("/products"),
+  details: (id: string) => requests.get<Product>(`/products/${id}`),
+  create: (product: Product) => requests.post<void>("/products", product),
+  update: (product: Product) =>
+    requests.put<void>(`/products/${product.id}`, product),
+  delete: (id: string) => requests.del<void>(`/products/${id}`),
 };
 
 const agent = {

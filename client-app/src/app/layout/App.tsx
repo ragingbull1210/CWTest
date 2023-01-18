@@ -5,6 +5,7 @@ import ProductDashboard from "../features/ProductDashboard";
 import { v4 as uuid } from "uuid";
 import agent from "../api/agent";
 import LoadingComponent from "./LoadingComponent";
+import { LocalActivity } from "@mui/icons-material";
 
 function App() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -13,6 +14,7 @@ function App() {
   );
   const [editMode, setEditMode] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
+  const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
     agent.Products.list().then((response) => {
@@ -40,11 +42,23 @@ function App() {
 
   const handleCreateOrEditProduct = (product: Product) => {
     product.active = Boolean(product.active);
-    product.id
-      ? setProducts([...products.filter((p) => p.id !== product.id), product])
-      : setProducts([...products, { ...product, id: uuid() }]);
-    setEditMode(false);
-    setSelectedProduct(product);
+    setSubmitting(true);
+    if (product.id) {
+      agent.Products.update(product).then(() => {
+        setProducts([...products.filter((p) => p.id !== product.id), product]);
+        setSelectedProduct(product);
+        setEditMode(false);
+        setSubmitting(false);
+      });
+    } else {
+      product.id = uuid();
+      agent.Products.create(product).then(() => {
+        setProducts([...products, product]);
+        setSelectedProduct(product);
+        setEditMode(false);
+        setSubmitting(false);
+      });
+    }
   };
 
   const handleDeleteProduct = (id: string) => {
@@ -66,6 +80,7 @@ function App() {
         handleFormClose={handleFormClose}
         handleCreateOrEditProduct={handleCreateOrEditProduct}
         handleDeleteProduct={handleDeleteProduct}
+        submitting={submitting}
       />
     </>
   );

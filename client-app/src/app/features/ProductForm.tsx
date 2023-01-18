@@ -1,18 +1,22 @@
-import { Container } from "@mui/material";
+import { Button, CircularProgress, Container } from "@mui/material";
 import { ChangeEvent, useState } from "react";
 import { Product } from "../../models/product";
+import LoadingComponent from "../layout/LoadingComponent";
 import ActionButton from "./ActionButton";
+import { LoadingButton } from "@mui/lab";
 
 interface Props {
   handleFormClose: () => void;
   product: Product | undefined;
   handleCreateOrEditProduct: (product: Product) => void;
+  submitting: boolean;
 }
 
 export default function ProductForm({
   handleFormClose,
   product: selectedProduct,
   handleCreateOrEditProduct,
+  submitting,
 }: Props) {
   const initialState = selectedProduct ?? {
     id: "",
@@ -130,7 +134,17 @@ export default function ProductForm({
         </div>
         <br />
         <div>
-          <ActionButton color="primary" name="Submit" type="submit" />
+          <LoadingButton
+            color="primary"
+            name="Submit"
+            type="submit"
+            variant="contained"
+            loading={submitting}
+            size="medium"
+            sx={{ mr: 2 }}
+          >
+            Submit
+          </LoadingButton>
           <ActionButton
             color="secondary"
             name="Cancel"
@@ -139,7 +153,6 @@ export default function ProductForm({
           />
         </div>
       </form>
-      
     </Container>
   );
 }

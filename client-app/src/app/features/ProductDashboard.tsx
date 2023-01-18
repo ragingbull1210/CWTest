@@ -13,6 +13,7 @@ interface Props {
   handleFormClose: () => void;
   handleCreateOrEditProduct: (product: Product) => void;
   handleDeleteProduct: (id: string) => void;
+  submitting: boolean;
 }
 
 export default function ProductDashboard({
@@ -25,6 +26,7 @@ export default function ProductDashboard({
   handleFormClose,
   handleCreateOrEditProduct,
   handleDeleteProduct,
+  submitting,
 }: Props) {
   return (
     <>
@@ -47,6 +49,7 @@ export default function ProductDashboard({
           handleFormClose={handleFormClose}
           product={selectedProduct}
           handleCreateOrEditProduct={handleCreateOrEditProduct}
+          submitting={submitting}
         />
       )}
     </>
