@@ -1,29 +1,30 @@
-﻿using Domain;
+﻿using Application.Activities;
+using Domain;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Persistence;
+
 
 namespace API.Controllers
 {
     public class ProductsController : BaseApiController
     {
-        private readonly DataContext _context;
+        private readonly IMediator _mediator;
 
-        public ProductsController(DataContext context)
+        public ProductsController(IMediator mediator)
         {
-            _context = context; 
+            _mediator = mediator; 
         }
 
         [HttpGet]
         public async Task<ActionResult<List<Product>>> GetActivities()
         {
-            return await _context.Products.ToListAsync();
+            return await _mediator.Send(new List.Query());
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Product>> GetActivity(Guid id)
         {
-            return await _context.Products.FindAsync(id);
+            return Ok();
         }
     }
 }
