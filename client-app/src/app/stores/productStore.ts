@@ -17,11 +17,19 @@ export default class ProductStore {
     this.loadingInitial = true;
     try {
       const products = await agent.Products.list();
-      this.products = products;
-      this.loadingInitial = false;
+      this.setProducts(products);
+      this.setLoadingInitial(false);
     } catch (error) {
       console.log(error);
-      this.loadingInitial = false;
+      this.setLoadingInitial(false);
     }
+  };
+
+  setLoadingInitial = (state: boolean) => {
+    this.loadingInitial = state;
+  };
+
+  setProducts = (state: Product[]) => {
+    this.products = state;
   };
 }
