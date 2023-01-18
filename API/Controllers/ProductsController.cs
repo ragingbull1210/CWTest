@@ -8,17 +8,10 @@ namespace API.Controllers
 {
     public class ProductsController : BaseApiController
     {
-        private readonly IMediator _mediator;
-
-        public ProductsController(IMediator mediator)
-        {
-            _mediator = mediator; 
-        }
-
         [HttpGet]
         public async Task<ActionResult<List<Product>>> GetActivities()
         {
-            return await _mediator.Send(new List.Query());
+            return await Mediator.Send(new List.Query());
         }
 
         [HttpGet("{id}")]
