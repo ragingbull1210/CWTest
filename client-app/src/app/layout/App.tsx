@@ -6,6 +6,8 @@ import { v4 as uuid } from "uuid";
 import agent from "../api/agent";
 import LoadingComponent from "./LoadingComponent";
 import { useStore } from "../stores/store";
+import { Button } from "@mui/material";
+import { observer } from "mobx-react-lite";
 
 function App() {
   const { productStore } = useStore();
@@ -75,6 +77,11 @@ function App() {
   return (
     <>
       <h2>{productStore.title}</h2>
+      <Button
+        name="Add exclamation!"
+        variant="contained"
+        onClick={productStore.setTitle}
+      />
       <ResponsiveAppBar pages={["+ Add Product"]} />
       <ProductDashboard
         products={products}
@@ -92,4 +99,4 @@ function App() {
   );
 }
 
-export default App;
+export default observer(App);
