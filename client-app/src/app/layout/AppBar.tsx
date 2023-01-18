@@ -13,10 +13,12 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 
-const pages = ["Products"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+interface AppBarProps {
+  pages: string[];
+}
 
-function ResponsiveAppBar() {
+function ResponsiveAppBar(props: AppBarProps) {
+  const pages = props.pages;
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
