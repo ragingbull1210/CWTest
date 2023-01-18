@@ -3,15 +3,91 @@ import { Product } from "../../models/product";
 import agent from "../api/agent";
 import { v4 as uuid } from "uuid";
 
+interface Props {
+  directions: "desc" | "asc" | undefined;
+}
+
 export default class ProductStore {
-  products: Product[] = [];
+  productRegistry = new Map<string, Product>();
   selectedProduct: Product | undefined = undefined;
   editMode = false;
   loading = false;
-  loadingInitial = false;
+  loadingInitial = true;
+
+  nameSortDirection: Props["directions"] = "asc";
+  priceSortDirection: Props["directions"] = undefined;
+  typeSortDirection: Props["directions"] = undefined;
+  activeSortDirection: Props["directions"] = undefined;
 
   constructor() {
     makeAutoObservable(this);
+  }
+
+  get sortedProducts() {
+    if (this.activeSortDirection === "desc") {
+      return this.productsByDescendingActive();
+    } else if (this.activeSortDirection === "asc") {
+      return this.productsByAscendingActive();
+    } else if (this.typeSortDirection === "desc") {
+      return this.productsByDescendingType();
+    } else if (this.typeSortDirection === "asc") {
+      return this.productsByAscendingType();
+    } else if (this.priceSortDirection === "desc") {
+      return this.productsByDescendingPrice();
+    } else if (this.priceSortDirection === "asc") {
+      return this.productsByAscendingPrice();
+    } else if (this.nameSortDirection === "desc") {
+      return this.productsByDescendingName();
+    }
+    return this.productsByAscendingName();
+  }
+
+  productsByAscendingName() {
+    return Array.from(this.productRegistry.values()).sort((a, b) =>
+      a.name.localeCompare(b.name)
+    );
+  }
+
+  productsByDescendingName() {
+    return Array.from(this.productRegistry.values()).sort((a, b) =>
+      b.name.localeCompare(a.name)
+    );
+  }
+
+  productsByAscendingPrice() {
+    return Array.from(this.productRegistry.values()).sort((a, b) => {
+      return a.price - b.price;
+    });
+  }
+
+  productsByDescendingPrice() {
+    return Array.from(this.productRegistry.values()).sort((a, b) => {
+      return b.price - a.price;
+    });
+  }
+
+  productsByAscendingType() {
+    return Array.from(this.productRegistry.values()).sort((a, b) =>
+      a.type.localeCompare(b.type)
+    );
+  }
+
+  productsByDescendingType() {
+    return Array.from(this.productRegistry.values()).sort((a, b) =>
+      b.type.localeCompare(a.type)
+    );
+  }
+
+  productsByAscendingActive() {
+    return Array.from(this.productRegistry.values()).sort((a, b) =>
+      a.active.toString().localeCompare(b.active.toString())
+    );
+  }
+
+  productsByDescendingActive() {
+    return Array.from(this.productRegistry.values()).sort((a, b) =>
+      b.active.toString().localeCompare(a.active.toString())
+    );
   }
 
   loadProducts = async () => {
@@ -19,7 +95,9 @@ export default class ProductStore {
     try {
       const products = await agent.Products.list();
       runInAction(() => {
-        this.products = products;
+        products.forEach((product) => {
+          this.productRegistry.set(product.id, product);
+        });
         this.setLoadingInitial(false);
       });
     } catch (error) {
@@ -33,7 +111,7 @@ export default class ProductStore {
   };
 
   selectProduct = (id: string) => {
-    this.selectedProduct = this.products.find((p) => p.id === id);
+    this.selectedProduct = this.productRegistry.get(id);
   };
 
   cancelSelectedProduct = () => {
@@ -51,12 +129,12 @@ export default class ProductStore {
 
   createProduct = async (product: Product) => {
     this.loading = true;
-    product.active = Boolean(product.active);
+    //product.active = Boolean(product.active);
     product.id = uuid();
     try {
       await agent.Products.create(product);
       runInAction(() => {
-        this.products.push(product);
+        this.productRegistry.set(product.id, product);
         this.selectedProduct = product;
         this.editMode = false;
         this.loading = false;
@@ -74,10 +152,7 @@ export default class ProductStore {
     try {
       await agent.Products.update(product);
       runInAction(() => {
-        this.products = [
-          ...this.products.filter((p) => p.id !== product.id),
-          product,
-        ];
+        this.productRegistry.set(product.id, product);
         this.selectedProduct = product;
         this.editMode = false;
         this.loading = false;
@@ -95,7 +170,7 @@ export default class ProductStore {
     try {
       await agent.Products.delete(id);
       runInAction(() => {
-        this.products = [...this.products.filter((p) => p.id !== id)];
+        this.productRegistry.delete(id);
         if (this.selectedProduct?.id === id) this.cancelSelectedProduct();
         this.loading = false;
       });
@@ -105,5 +180,42 @@ export default class ProductStore {
         this.loading = false;
       });
     }
+  };
+
+  toggleDirection = (state: Props["directions"]) => {
+    if (state === undefined) {
+      return "asc";
+    } else if (state === "asc") {
+      return "desc";
+    } else if (state === "desc") {
+      return "asc";
+    }
+  };
+
+  resetDirections = () => {
+    this.nameSortDirection = undefined;
+    this.priceSortDirection = undefined;
+    this.typeSortDirection = undefined;
+    this.activeSortDirection = undefined;
+  };
+
+  changeNameSortDirection = (state: Props["directions"]) => {
+    this.resetDirections();
+    this.nameSortDirection = this.toggleDirection(state);
+  };
+
+  changePriceSortDirection = (state: Props["directions"]) => {
+    this.resetDirections();
+    this.priceSortDirection = this.toggleDirection(state);
+  };
+
+  changeTypeSortDirection = (state: Props["directions"]) => {
+    this.resetDirections();
+    this.typeSortDirection = this.toggleDirection(state);
+  };
+
+  changeActiveSortDirection = (state: Props["directions"]) => {
+    this.resetDirections();
+    this.activeSortDirection = this.toggleDirection(state);
   };
 }

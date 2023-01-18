@@ -27,7 +27,7 @@ export default observer(function ProductsTable({
   productsPerPage,
 }: ProductsTableProps) {
   const { productStore } = useStore();
-  const { deleteProduct, products, loading } = productStore;
+  const { deleteProduct, sortedProducts, loading } = productStore;
 
   const [page, setPage] = useState<number>(0);
   const [target, setTarget] = useState("");
@@ -65,22 +65,68 @@ export default observer(function ProductsTable({
           >
             <TableRow>
               <TableCell>
-                <TableSortLabel active={true}>Name</TableSortLabel>
+                <TableSortLabel
+                  direction={productStore.nameSortDirection}
+                  active={productStore.nameSortDirection !== undefined}
+                  onClick={() =>
+                    productStore.changeNameSortDirection(
+                      productStore.nameSortDirection
+                    )
+                  }
+                >
+                  Name
+                </TableSortLabel>
               </TableCell>
               <TableCell></TableCell>
               <TableCell></TableCell>
-              <TableCell>Price</TableCell>
-              <TableCell>Type</TableCell>
-              <TableCell>Active</TableCell>
+              <TableCell>
+                <TableSortLabel
+                  direction={productStore.priceSortDirection}
+                  active={productStore.priceSortDirection !== undefined}
+                  onClick={() =>
+                    productStore.changePriceSortDirection(
+                      productStore.priceSortDirection
+                    )
+                  }
+                >
+                  Price
+                </TableSortLabel>
+              </TableCell>
+              <TableCell>
+                <TableSortLabel
+                  direction={productStore.typeSortDirection}
+                  active={productStore.typeSortDirection !== undefined}
+                  onClick={() =>
+                    productStore.changeTypeSortDirection(
+                      productStore.typeSortDirection
+                    )
+                  }
+                >
+                  Type
+                </TableSortLabel>
+              </TableCell>
+              <TableCell>
+                <TableSortLabel
+                  direction={productStore.activeSortDirection}
+                  active={productStore.activeSortDirection !== undefined}
+                  onClick={() =>
+                    productStore.changeActiveSortDirection(
+                      productStore.activeSortDirection
+                    )
+                  }
+                >
+                  Active
+                </TableSortLabel>
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {(products.length > 0
-              ? products.slice(
+            {(sortedProducts.length > 0
+              ? sortedProducts.slice(
                   page * productsPerPage,
                   page * productsPerPage + productsPerPage
                 )
-              : products
+              : sortedProducts
             ).map((product: Product) => (
               <TableRow
                 key={product.id}
@@ -107,7 +153,7 @@ export default observer(function ProductsTable({
                     Delete
                   </LoadingButton>
                 </TableCell>
-                <TableCell>${product.price}</TableCell>
+                <TableCell>${product.price.toFixed(2)}</TableCell>
                 <TableCell>{product.type}</TableCell>
                 <TableCell>
                   {product.active ? <DoneIcon /> : <CloseIcon />}
@@ -121,7 +167,7 @@ export default observer(function ProductsTable({
             >
               <FooterPagination
                 productsPerPage={productsPerPage}
-                productsLength={products.length}
+                productsLength={sortedProducts.length}
                 page={page}
                 handleChangePage={handleChangePage}
               />
