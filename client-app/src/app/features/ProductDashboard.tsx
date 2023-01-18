@@ -36,6 +36,7 @@ export default function ProductDashboard({
         handleSelectedProduct={handleSelectedProduct}
         handleFormOpen={handleFormOpen}
         handleDeleteProduct={handleDeleteProduct}
+        submitting={submitting}
       />
       {selectedProduct && !editMode && (
         <ProductDetails

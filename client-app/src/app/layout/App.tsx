@@ -62,7 +62,11 @@ function App() {
   };
 
   const handleDeleteProduct = (id: string) => {
-    setProducts([...products.filter((p) => p.id !== id)]);
+    setSubmitting(true);
+    agent.Products.delete(id).then(() => {
+      setProducts([...products.filter((p) => p.id !== id)]);
+      setSubmitting(false);
+    });
   };
 
   if (loading) return <LoadingComponent />;

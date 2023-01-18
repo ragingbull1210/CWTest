@@ -12,9 +12,10 @@ import {
 import { Product } from "../../models/product";
 import DoneIcon from "@mui/icons-material/Done";
 import CloseIcon from "@mui/icons-material/Close";
-import { useState } from "react";
+import { SyntheticEvent, useState } from "react";
 import FooterPagination from "./FooterPagination";
 import ActionButton from "./ActionButton";
+import { LoadingButton } from "@mui/lab";
 
 interface ProductsTableProps {
   products: Product[];
@@ -22,6 +23,7 @@ interface ProductsTableProps {
   handleSelectedProduct: (id: string) => void;
   handleFormOpen: (id?: string) => void;
   handleDeleteProduct: (id: string) => void;
+  submitting: boolean;
 }
 
 export default function ProductsTable({
@@ -30,14 +32,24 @@ export default function ProductsTable({
   handleSelectedProduct,
   handleFormOpen,
   handleDeleteProduct,
+  submitting,
 }: ProductsTableProps) {
   const [page, setPage] = useState<number>(0);
+  const [target, setTarget] = useState("");
 
   const handleChangePage = (
     event: React.MouseEvent<HTMLButtonElement> | null,
     newPage: number
   ) => {
     setPage(newPage);
+  };
+
+  const HandleProductDelete = (
+    e: SyntheticEvent<HTMLButtonElement>,
+    id: string
+  ) => {
+    setTarget(e.currentTarget.name);
+    handleDeleteProduct(id);
   };
 
   return (
@@ -89,11 +101,15 @@ export default function ProductsTable({
                   />
                 </TableCell>
                 <TableCell>
-                  <ActionButton
+                  <LoadingButton
                     color="error"
-                    name="Delete"
-                    onClick={() => handleDeleteProduct(product.id)}
-                  />
+                    name={product.id}
+                    onClick={(e) => HandleProductDelete(e, product.id)}
+                    variant="contained"
+                    loading={submitting && target === product.id}
+                  >
+                    Delete
+                  </LoadingButton>
                 </TableCell>
                 <TableCell>${product.price}</TableCell>
                 <TableCell>{product.type}</TableCell>
