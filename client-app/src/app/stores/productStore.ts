@@ -94,38 +94,66 @@ export default class ProductStore {
     this.loadingInitial = true;
     try {
       const products = await agent.Products.list();
-      runInAction(() => {
-        products.forEach((product) => {
-          this.productRegistry.set(product.id, product);
-        });
-        this.setLoadingInitial(false);
+      products.forEach((product) => {
+        this.setProduct(product);
       });
+      this.setLoadingInitial(false);
     } catch (error) {
       console.log(error);
       this.setLoadingInitial(false);
     }
   };
 
+  loadProduct = async (id: string) => {
+    let product = this.getProduct(id);
+    if (product) {
+      this.selectedProduct = product;
+      return product;
+    } else {
+      this.loadingInitial = true;
+      try {
+        product = await agent.Products.details(id);
+        runInAction(() => {
+          this.selectedProduct = product;
+        });
+        this.setProduct(product);
+        this.setLoadingInitial(false);
+        return product;
+      } catch (error) {
+        console.log(error);
+        this.setLoadingInitial(false);
+      }
+    }
+  };
+
+  private setProduct = (product: Product) => {
+    this.productRegistry.set(product.id, product);
+  };
+
+  private getProduct = (id: string) => {
+    return this.productRegistry.get(id);
+  };
+
   setLoadingInitial = (state: boolean) => {
     this.loadingInitial = state;
   };
 
-  selectProduct = (id: string) => {
-    this.selectedProduct = this.productRegistry.get(id);
-  };
+  // selectProduct = (id: string) => {
+  //   this.selectedProduct = this.productRegistry.get(id);
+  // };
 
-  cancelSelectedProduct = () => {
-    this.selectedProduct = undefined;
-  };
+  // cancelSelectedProduct = () => {
+  //   this.selectedProduct = undefined;
+  // };
 
-  openForm = (id?: string) => {
-    id ? this.selectProduct(id) : this.cancelSelectedProduct();
-    this.editMode = true;
-  };
+  // openForm = (id?: string) => {
+  //   id ? this.selectProduct(id) : this.cancelSelectedProduct();
+  //   this.editMode = true;
+  // };
 
-  closeForm = () => {
-    this.editMode = false;
-  };
+  // closeForm = () => {
+  //   this.editMode = false;
+  // };
 
   createProduct = async (product: Product) => {
     this.loading = true;
@@ -171,7 +199,7 @@ export default class ProductStore {
       await agent.Products.delete(id);
       runInAction(() => {
         this.productRegistry.delete(id);
-        if (this.selectedProduct?.id === id) this.cancelSelectedProduct();
+        //if (this.selectedProduct?.id === id) this.cancelSelectedProduct();
         this.loading = false;
       });
     } catch (error) {

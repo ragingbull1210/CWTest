@@ -18,6 +18,7 @@ import ActionButton from "./ActionButton";
 import { LoadingButton } from "@mui/lab";
 import { useStore } from "../stores/store";
 import { observer } from "mobx-react-lite";
+import { NavLink } from "react-router-dom";
 
 interface ProductsTableProps {
   productsPerPage: number;
@@ -49,13 +50,16 @@ export default observer(function ProductsTable({
 
   return (
     <>
-      <ActionButton
-        color="primary"
-        name="Add Product"
-        marginTop={3}
-        marginLeft={16}
-        onClick={productStore.openForm}
-      />
+      <NavLink to="/addproduct" style={{ textDecoration: "none" }}>
+        <ActionButton
+          color="primary"
+          name="Add Product"
+          marginTop={3}
+          marginLeft={16}
+          // onClick={productStore.openForm}
+        />
+      </NavLink>
+
       <TableContainer component={Paper} sx={{ mt: 2 }}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead
@@ -136,11 +140,12 @@ export default observer(function ProductsTable({
               >
                 <TableCell>{product.name}</TableCell>
                 <TableCell>
-                  <ActionButton
-                    color="info"
-                    name="Edit"
-                    onClick={() => productStore.selectProduct(product.id)}
-                  />
+                  <NavLink
+                    to={`/products/${product.id}`}
+                    style={{ textDecoration: "none" }}
+                  >
+                    <ActionButton color="info" name="Edit" />
+                  </NavLink>
                 </TableCell>
                 <TableCell>
                   <LoadingButton

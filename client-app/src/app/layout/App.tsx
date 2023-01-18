@@ -1,24 +1,30 @@
-import React, { useEffect, useState } from "react";
-import { Product } from "../../models/product";
+import React from "react";
 import ResponsiveAppBar from "./AppBar";
 import ProductDashboard from "../features/ProductDashboard";
-import LoadingComponent from "./LoadingComponent";
-import { useStore } from "../stores/store";
 import { observer } from "mobx-react-lite";
+import { Route, Routes, useLocation } from "react-router-dom";
+import ProductForm from "../features/ProductForm";
+import ProductDetails from "../features/ProductDetails";
 
 function App() {
-  const { productStore } = useStore();
-
-  useEffect(() => {
-    productStore.loadProducts();
-  }, [productStore]);
-
-  if (productStore.loadingInitial) return <LoadingComponent />;
-
+  const location = useLocation();
   return (
     <>
       <ResponsiveAppBar />
-      <ProductDashboard />
+      <Routes>
+        <Route path="/" element={<ProductDashboard />} />
+        <Route path="/addproduct" element={<ProductForm />} />
+        <Route
+          key={location.key}
+          path="/manage/:id"
+          element={<ProductForm />}
+        />
+        <Route
+          key={location.key}
+          path="/products/:id"
+          element={<ProductDetails />}
+        />
+      </Routes>
     </>
   );
 }

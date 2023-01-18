@@ -1,14 +1,22 @@
 import { Card, CardActions, CardContent, Typography } from "@mui/material";
 import { observer } from "mobx-react-lite";
+import { useEffect } from "react";
+import { Link, useParams } from "react-router-dom";
 import LoadingComponent from "../layout/LoadingComponent";
 import { useStore } from "../stores/store";
 import ActionButton from "./ActionButton";
 
 export default observer(function ProductDetails() {
   const { productStore } = useStore();
-  const { selectedProduct, openForm, cancelSelectedProduct } = productStore;
+  const { selectedProduct, loadProduct, loadingInitial } = productStore;
 
-  if (!selectedProduct) return <LoadingComponent />;
+  const { id } = useParams<{ id: string }>();
+
+  useEffect(() => {
+    if (id) loadProduct(id);
+  }, [id, loadProduct]);
+
+  if (loadingInitial || !selectedProduct) return <LoadingComponent />;
   return (
     <Card sx={{ minWidth: 275 }}>
       <CardContent>
@@ -38,16 +46,15 @@ export default observer(function ProductDetails() {
         </Typography>
       </CardContent>
       <CardActions>
-        <ActionButton
-          color="info"
-          name="Edit"
-          onClick={() => openForm(selectedProduct.id)}
-        />
-        <ActionButton
-          color="secondary"
-          name="Cancel"
-          onClick={cancelSelectedProduct}
-        />
+        <Link
+          to={`/manage/${selectedProduct.id}`}
+          style={{ textDecoration: "none" }}
+        >
+          <ActionButton color="info" name="Edit" />
+        </Link>
+        <Link to="/" style={{ textDecoration: "none" }}>
+          <ActionButton color="secondary" name="Cancel" />
+        </Link>
       </CardActions>
     </Card>
   );
