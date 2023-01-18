@@ -89,4 +89,21 @@ export default class ProductStore {
       });
     }
   };
+
+  deleteProduct = async (id: string) => {
+    this.loading = true;
+    try {
+      await agent.Products.delete(id);
+      runInAction(() => {
+        this.products = [...this.products.filter((p) => p.id !== id)];
+        if (this.selectedProduct?.id === id) this.cancelSelectedProduct();
+        this.loading = false;
+      });
+    } catch (error) {
+      console.log(error);
+      runInAction(() => {
+        this.loading = false;
+      });
+    }
+  };
 }

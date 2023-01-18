@@ -5,27 +5,12 @@ import ProductDetails from "./ProductDetails";
 import ProductForm from "./ProductForm";
 import ProductsTable from "./ProductsTable";
 
-interface Props {
-  products: Product[];
-  handleDeleteProduct: (id: string) => void;
-  submitting: boolean;
-}
-
-export default observer(function ProductDashboard({
-  products,
-  handleDeleteProduct,
-  submitting,
-}: Props) {
+export default observer(function ProductDashboard() {
   const { productStore } = useStore();
   const { selectedProduct, editMode } = productStore;
   return (
     <>
-      <ProductsTable
-        products={products}
-        productsPerPage={5}
-        handleDeleteProduct={handleDeleteProduct}
-        submitting={submitting}
-      />
+      <ProductsTable productsPerPage={5} />
       {selectedProduct && !editMode && <ProductDetails />}
       {editMode && <ProductForm />}
     </>

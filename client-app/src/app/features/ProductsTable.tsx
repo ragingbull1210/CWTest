@@ -20,18 +20,15 @@ import { useStore } from "../stores/store";
 import { observer } from "mobx-react-lite";
 
 interface ProductsTableProps {
-  products: Product[];
   productsPerPage: number;
-  handleDeleteProduct: (id: string) => void;
-  submitting: boolean;
 }
 
 export default observer(function ProductsTable({
-  products,
   productsPerPage,
-  handleDeleteProduct,
-  submitting,
 }: ProductsTableProps) {
+  const { productStore } = useStore();
+  const { deleteProduct, products, loading } = productStore;
+
   const [page, setPage] = useState<number>(0);
   const [target, setTarget] = useState("");
 
@@ -47,10 +44,8 @@ export default observer(function ProductsTable({
     id: string
   ) => {
     setTarget(e.currentTarget.name);
-    handleDeleteProduct(id);
+    deleteProduct(id);
   };
-
-  const { productStore } = useStore();
 
   return (
     <>
@@ -107,7 +102,7 @@ export default observer(function ProductsTable({
                     name={product.id}
                     onClick={(e) => HandleProductDelete(e, product.id)}
                     variant="contained"
-                    loading={submitting && target === product.id}
+                    loading={loading && target === product.id}
                   >
                     Delete
                   </LoadingButton>
