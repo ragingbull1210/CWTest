@@ -20,12 +20,14 @@ interface ProductsTableProps {
   products: Product[];
   productsPerPage: number;
   handleSelectedProduct: (id: string) => void;
+  handleFormOpen: (id?: string) => void;
 }
 
 export default function ProductsTable({
   products,
   productsPerPage,
   handleSelectedProduct,
+  handleFormOpen,
 }: ProductsTableProps) {
   const [page, setPage] = useState<number>(0);
 
@@ -38,7 +40,12 @@ export default function ProductsTable({
 
   return (
     <>
-      <ActionButton color="primary" name="+Add Product" marginTop={3} />
+      <ActionButton
+        color="primary"
+        name="+Add Product"
+        marginTop={3}
+        onClick={handleFormOpen}
+      />
       <TableContainer component={Paper} sx={{ mt: 2 }}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead

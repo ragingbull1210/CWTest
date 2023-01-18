@@ -28,6 +28,7 @@ export default function ProductDashboard({
         products={products}
         productsPerPage={5}
         handleSelectedProduct={handleSelectedProduct}
+        handleFormOpen={handleFormOpen}
       />
       {selectedProduct && !editMode && (
         <ProductDetails
