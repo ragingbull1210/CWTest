@@ -1,9 +1,5 @@
 import React from "react";
-import {
-  autocompleteClasses,
-  CircularProgress,
-  Container,
-} from "@mui/material";
+import { CircularProgress, Container } from "@mui/material";
 
 export default function LoadingComponent() {
   return (

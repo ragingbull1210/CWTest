@@ -2,6 +2,7 @@ import { KeyboardArrowLeft, KeyboardArrowRight } from "@mui/icons-material";
 import { Box, IconButton, TablePagination, useTheme } from "@mui/material";
 import FirstPageIcon from "@mui/icons-material/FirstPage";
 import LastPageIcon from "@mui/icons-material/LastPage";
+import { observer } from "mobx-react-lite";
 
 interface TablePaginationActionsProps {
   count: number;
@@ -93,7 +94,7 @@ interface FooterPaginationProps {
   ) => void;
 }
 
-export default function FooterPagination({
+export default observer(function FooterPagination({
   productsPerPage,
   productsLength,
   page,
@@ -110,4 +111,4 @@ export default function FooterPagination({
       ActionsComponent={TablePaginationActions}
     />
   );
-}
+});

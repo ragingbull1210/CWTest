@@ -1,4 +1,5 @@
 import { Button } from "@mui/material";
+import { observer } from "mobx-react-lite";
 
 interface ActionButtonProps {
   color:
@@ -12,14 +13,16 @@ interface ActionButtonProps {
     | undefined;
   name: string;
   marginTop?: number;
+  marginLeft?: number;
   onClick?: () => void;
   type?: "button" | "submit" | "reset" | undefined;
 }
 
-export default function ActionButton({
+export default observer(function ActionButton({
   color,
   name,
   marginTop,
+  marginLeft,
   onClick,
   type,
 }: ActionButtonProps) {
@@ -27,11 +30,11 @@ export default function ActionButton({
     <Button
       variant="contained"
       color={color}
-      sx={{ mt: marginTop }}
+      sx={{ mt: marginTop, ml: marginLeft }}
       onClick={onClick}
       type={type}
     >
       {name}
     </Button>
   );
-}
+});

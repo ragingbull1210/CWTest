@@ -1,18 +1,14 @@
 import { Card, CardActions, CardContent, Typography } from "@mui/material";
-import { Product } from "../../models/product";
+import { observer } from "mobx-react-lite";
+import LoadingComponent from "../layout/LoadingComponent";
+import { useStore } from "../stores/store";
 import ActionButton from "./ActionButton";
 
-interface Props {
-  product: Product;
-  handleCancelSelectProduct: () => void;
-  handleFormOpen: (id?: string) => void;
-}
+export default observer(function ProductDetails() {
+  const { productStore } = useStore();
+  const { selectedProduct, openForm, cancelSelectedProduct } = productStore;
 
-export default function ProductDetails({
-  product,
-  handleCancelSelectProduct,
-  handleFormOpen,
-}: Props) {
+  if (!selectedProduct) return <LoadingComponent />;
   return (
     <Card sx={{ minWidth: 275 }}>
       <CardContent>
@@ -20,39 +16,39 @@ export default function ProductDetails({
           Product Name
         </Typography>
         <Typography variant="h5" component="div">
-          {product.name}
+          {selectedProduct.name}
         </Typography>
         <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
           Price
         </Typography>
         <Typography variant="h5" component="div">
-          ${product.price}
+          ${selectedProduct.price}
         </Typography>
         <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
           Type
         </Typography>
         <Typography variant="h5" component="div">
-          {product.type}
+          {selectedProduct.type}
         </Typography>
         <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
           Active State
         </Typography>
         <Typography variant="h5" component="div">
-          {product.active ? "Active" : "Inactive"}
+          {selectedProduct.active ? "Active" : "Inactive"}
         </Typography>
       </CardContent>
       <CardActions>
         <ActionButton
           color="info"
           name="Edit"
-          onClick={() => handleFormOpen(product.id)}
+          onClick={() => openForm(selectedProduct.id)}
         />
         <ActionButton
           color="secondary"
           name="Cancel"
-          onClick={handleCancelSelectProduct}
+          onClick={cancelSelectedProduct}
         />
       </CardActions>
     </Card>
   );
-}
+});

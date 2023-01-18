@@ -1,22 +1,15 @@
 import { Container } from "@mui/material";
 import { ChangeEvent, useState } from "react";
-import { Product } from "../../models/product";
 import ActionButton from "./ActionButton";
 import { LoadingButton } from "@mui/lab";
+import { useStore } from "../stores/store";
+import { observer } from "mobx-react-lite";
 
-interface Props {
-  handleFormClose: () => void;
-  product: Product | undefined;
-  handleCreateOrEditProduct: (product: Product) => void;
-  submitting: boolean;
-}
+export default observer(function ProductForm() {
+  const { productStore } = useStore();
+  const { selectedProduct, closeForm, createProduct, updateProduct, loading } =
+    productStore;
 
-export default function ProductForm({
-  handleFormClose,
-  product: selectedProduct,
-  handleCreateOrEditProduct,
-  submitting,
-}: Props) {
   const initialState = selectedProduct ?? {
     id: "",
     name: "",
@@ -30,7 +23,7 @@ export default function ProductForm({
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     console.log(product);
-    handleCreateOrEditProduct(product);
+    product.id ? updateProduct(product) : createProduct(product);
   };
 
   const handleInputChange = (
@@ -38,6 +31,13 @@ export default function ProductForm({
   ) => {
     const { name, value } = event.target;
     setProduct({ ...product, [name]: value });
+  };
+
+  //can't use handleInputChange as typescript gives us a bug when extracting event.target.checked
+  const handleCheckboxChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const isChecked = event.target.checked;
+    const { name } = event.target;
+    setProduct({ ...product, [name]: isChecked });
   };
 
   return (
@@ -125,9 +125,9 @@ export default function ProductForm({
               type="checkbox"
               id="active"
               name="active"
-              checked={product.active}
+              checked={Boolean(product.active)}
               value={product.active ? 1 : 0}
-              onChange={handleInputChange}
+              onChange={handleCheckboxChange}
             />
           </div>
         </div>
@@ -138,7 +138,7 @@ export default function ProductForm({
             name="Submit"
             type="submit"
             variant="contained"
-            loading={submitting}
+            loading={loading}
             size="medium"
             sx={{ mr: 2 }}
           >
@@ -147,11 +147,11 @@ export default function ProductForm({
           <ActionButton
             color="secondary"
             name="Cancel"
-            onClick={handleFormClose}
+            onClick={closeForm}
             type="button"
           />
         </div>
       </form>
     </Container>
   );
-}
+});

@@ -16,21 +16,19 @@ import { SyntheticEvent, useState } from "react";
 import FooterPagination from "./FooterPagination";
 import ActionButton from "./ActionButton";
 import { LoadingButton } from "@mui/lab";
+import { useStore } from "../stores/store";
+import { observer } from "mobx-react-lite";
 
 interface ProductsTableProps {
   products: Product[];
   productsPerPage: number;
-  handleSelectedProduct: (id: string) => void;
-  handleFormOpen: (id?: string) => void;
   handleDeleteProduct: (id: string) => void;
   submitting: boolean;
 }
 
-export default function ProductsTable({
+export default observer(function ProductsTable({
   products,
   productsPerPage,
-  handleSelectedProduct,
-  handleFormOpen,
   handleDeleteProduct,
   submitting,
 }: ProductsTableProps) {
@@ -52,13 +50,16 @@ export default function ProductsTable({
     handleDeleteProduct(id);
   };
 
+  const { productStore } = useStore();
+
   return (
     <>
       <ActionButton
         color="primary"
-        name="+Add Product"
+        name="Add Product"
         marginTop={3}
-        onClick={handleFormOpen}
+        marginLeft={16}
+        onClick={productStore.openForm}
       />
       <TableContainer component={Paper} sx={{ mt: 2 }}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -97,7 +98,7 @@ export default function ProductsTable({
                   <ActionButton
                     color="info"
                     name="Edit"
-                    onClick={() => handleSelectedProduct(product.id)}
+                    onClick={() => productStore.selectProduct(product.id)}
                   />
                 </TableCell>
                 <TableCell>
@@ -135,4 +136,4 @@ export default function ProductsTable({
       </TableContainer>
     </>
   );
-}
+});
