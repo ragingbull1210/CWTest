@@ -41,6 +41,14 @@ function App() {
     setEditMode(false);
   };
 
+  const handleCreateOrEditProduct = (product: Product) => {
+    product.id
+      ? setProducts([...products.filter((p) => p.id !== product.id), product])
+      : setProducts([...products, product]);
+    setEditMode(false);
+    setSelectedProduct(product);
+  };
+
   return (
     <>
       <ResponsiveAppBar pages={["+ Add Product"]} />
@@ -52,6 +60,7 @@ function App() {
         editMode={editMode}
         handleFormOpen={handleFormOpen}
         handleFormClose={handleFormClose}
+        handleCreateOrEditProduct={handleCreateOrEditProduct}
       />
     </>
   );

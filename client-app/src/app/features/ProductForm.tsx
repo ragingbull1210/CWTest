@@ -6,25 +6,27 @@ import ActionButton from "./ActionButton";
 interface Props {
   handleFormClose: () => void;
   product: Product | undefined;
+  handleCreateOrEditProduct: (product: Product) => void;
 }
 
 export default function ProductForm({
   handleFormClose,
   product: selectedProduct,
+  handleCreateOrEditProduct,
 }: Props) {
   const initialState = selectedProduct ?? {
     id: "",
     name: "",
-    price: "",
+    price: 0.0,
     type: "",
-    active: "false",
+    active: false,
   };
 
   const [product, setProduct] = useState(initialState);
 
   const handleSubmit = () => {
     console.log(product);
-    debugger;
+    handleCreateOrEditProduct(product);
   };
 
   const handleInputChange = (
@@ -70,6 +72,7 @@ export default function ProductForm({
               id="name"
               name="name"
               placeholder="Product Name"
+              value={product.name}
               onChange={handleInputChange}
             />
           </div>
@@ -85,6 +88,7 @@ export default function ProductForm({
               name="price"
               step=".01"
               placeholder="Price"
+              value={product.price}
               onChange={handleInputChange}
             />
           </div>
@@ -98,7 +102,7 @@ export default function ProductForm({
               id="type"
               name="type"
               onChange={handleInputChange}
-              defaultValue="Please select"
+              value={product.type}
             >
               <option value="Please select" disabled>
                 Please select
@@ -120,18 +124,19 @@ export default function ProductForm({
               type="checkbox"
               id="active"
               name="active"
-              value="true"
+              checked={product.active}
               onChange={handleInputChange}
             />
           </div>
         </div>
         <br />
         <div>
-          <ActionButton color="primary" type="submit" name="Submit" />
+          <ActionButton color="primary" name="Submit" type="submit" />
           <ActionButton
             color="secondary"
             name="Cancel"
             onClick={handleFormClose}
+            type="button"
           />
         </div>
       </form>

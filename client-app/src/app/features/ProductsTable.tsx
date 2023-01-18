@@ -89,7 +89,7 @@ export default function ProductsTable({
                 <TableCell>
                   <ActionButton color="error" name="Delete" />
                 </TableCell>
-                <TableCell>${product.price.toFixed(2)}</TableCell>
+                <TableCell>${product.price}</TableCell>
                 <TableCell>{product.type}</TableCell>
                 <TableCell>
                   {product.active ? <DoneIcon /> : <CloseIcon />}

@@ -11,6 +11,7 @@ interface Props {
   editMode: boolean;
   handleFormOpen: (id?: string) => void;
   handleFormClose: () => void;
+  handleCreateOrEditProduct: (product: Product) => void;
 }
 
 export default function ProductDashboard({
@@ -21,6 +22,7 @@ export default function ProductDashboard({
   editMode,
   handleFormOpen,
   handleFormClose,
+  handleCreateOrEditProduct,
 }: Props) {
   return (
     <>
@@ -41,6 +43,7 @@ export default function ProductDashboard({
         <ProductForm
           handleFormClose={handleFormClose}
           product={selectedProduct}
+          handleCreateOrEditProduct={handleCreateOrEditProduct}
         />
       )}
     </>

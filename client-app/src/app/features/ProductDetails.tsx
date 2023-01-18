@@ -26,7 +26,7 @@ export default function ProductDetails({
           Price
         </Typography>
         <Typography variant="h5" component="div">
-          ${product.price.toFixed(2)}
+          ${product.price}
         </Typography>
         <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
           Type
