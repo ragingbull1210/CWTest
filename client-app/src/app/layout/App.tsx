@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Product } from "../../models/product";
-
 import ResponsiveAppBar from "./AppBar";
-import ProductsTable from "../features/ProductsTable";
-import ProductDetails from "../features/ProductDetails";
-import ProductForm from "../features/ProductForm";
 import ProductDashboard from "../features/ProductDashboard";
+import { v4 as uuid } from "uuid";
 
 function App() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -44,9 +41,13 @@ function App() {
   const handleCreateOrEditProduct = (product: Product) => {
     product.id
       ? setProducts([...products.filter((p) => p.id !== product.id), product])
-      : setProducts([...products, product]);
+      : setProducts([...products, { ...product, id: uuid() }]);
     setEditMode(false);
     setSelectedProduct(product);
+  };
+
+  const handleDeleteProduct = (id: string) => {
+    setProducts([...products.filter((p) => p.id !== id)]);
   };
 
   return (
@@ -61,6 +62,7 @@ function App() {
         handleFormOpen={handleFormOpen}
         handleFormClose={handleFormClose}
         handleCreateOrEditProduct={handleCreateOrEditProduct}
+        handleDeleteProduct={handleDeleteProduct}
       />
     </>
   );

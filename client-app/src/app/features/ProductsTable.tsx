@@ -21,6 +21,7 @@ interface ProductsTableProps {
   productsPerPage: number;
   handleSelectedProduct: (id: string) => void;
   handleFormOpen: (id?: string) => void;
+  handleDeleteProduct: (id: string) => void;
 }
 
 export default function ProductsTable({
@@ -28,6 +29,7 @@ export default function ProductsTable({
   productsPerPage,
   handleSelectedProduct,
   handleFormOpen,
+  handleDeleteProduct,
 }: ProductsTableProps) {
   const [page, setPage] = useState<number>(0);
 
@@ -87,7 +89,11 @@ export default function ProductsTable({
                   />
                 </TableCell>
                 <TableCell>
-                  <ActionButton color="error" name="Delete" />
+                  <ActionButton
+                    color="error"
+                    name="Delete"
+                    onClick={() => handleDeleteProduct(product.id)}
+                  />
                 </TableCell>
                 <TableCell>${product.price}</TableCell>
                 <TableCell>{product.type}</TableCell>
