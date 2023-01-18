@@ -6,7 +6,6 @@ import { v4 as uuid } from "uuid";
 import agent from "../api/agent";
 import LoadingComponent from "./LoadingComponent";
 import { useStore } from "../stores/store";
-import { Button } from "@mui/material";
 import { observer } from "mobx-react-lite";
 
 function App() {
@@ -16,15 +15,11 @@ function App() {
     undefined
   );
   const [editMode, setEditMode] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(true);
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
-    agent.Products.list().then((response) => {
-      setProducts(response);
-      setLoading(false);
-    });
-  }, []);
+    productStore.loadProducts();
+  }, [productStore]);
 
   const handleSelectedProduct = (id: string) => {
     setSelectedProduct(products.find((p) => p.id === id));
@@ -72,19 +67,13 @@ function App() {
     });
   };
 
-  if (loading) return <LoadingComponent />;
+  if (productStore.loadingInitial) return <LoadingComponent />;
 
   return (
     <>
-      <h2>{productStore.title}</h2>
-      <Button
-        name="Add exclamation!"
-        variant="contained"
-        onClick={productStore.setTitle}
-      />
       <ResponsiveAppBar pages={["+ Add Product"]} />
       <ProductDashboard
-        products={products}
+        products={productStore.products}
         selectedProduct={selectedProduct}
         handleSelectedProduct={handleSelectedProduct}
         handleCancelSelectProduct={handleCancelSelectProduct}
