@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import "./App.css";
 import axios from "axios";
 import {
   Box,
@@ -26,6 +25,7 @@ import LastPageIcon from "@mui/icons-material/LastPage";
 import { Product } from "../../models/product";
 import DoneIcon from "@mui/icons-material/Done";
 import CloseIcon from "@mui/icons-material/Close";
+import ResponsiveAppBar from "./AppBar";
 
 interface TablePaginationActionsProps {
   count: number;
@@ -113,10 +113,12 @@ function App() {
   const productsPerPage = 5;
 
   useEffect(() => {
-    axios.get("http://localhost:5000/api/products").then((response) => {
-      console.log(response);
-      setProducts(response.data);
-    });
+    axios
+      .get<Product[]>("http://localhost:5000/api/products")
+      .then((response) => {
+        console.log(response);
+        setProducts(response.data);
+      });
   }, []);
 
   const handleChangePage = (
@@ -127,9 +129,9 @@ function App() {
   };
 
   return (
-    // <Paper component={Stack} direction="column" justifyContent="center">
-    <Container sx={{ py: 16 }}>
-      <TableContainer component={Paper}>
+    <div>
+      <ResponsiveAppBar />
+      <TableContainer component={Paper} sx={{ mt: 2 }}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead
             sx={{
@@ -140,6 +142,8 @@ function App() {
               <TableCell>
                 <TableSortLabel active={true}>Name</TableSortLabel>
               </TableCell>
+              <TableCell></TableCell>
+              <TableCell></TableCell>
               <TableCell>Price</TableCell>
               <TableCell>Type</TableCell>
               <TableCell>Active</TableCell>
@@ -160,6 +164,8 @@ function App() {
                 }}
               >
                 <TableCell>{product.name}</TableCell>
+                <TableCell></TableCell>
+                <TableCell></TableCell>
                 <TableCell>${product.price.toFixed(2)}</TableCell>
                 <TableCell>{product.type}</TableCell>
                 <TableCell>
@@ -185,8 +191,7 @@ function App() {
           </TableFooter>
         </Table>
       </TableContainer>
-    </Container>
-    // </Paper>
+    </div>
   );
 }
 
