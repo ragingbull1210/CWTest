@@ -9,6 +9,8 @@ import { Product } from "../../models/product";
 
 import ResponsiveAppBar from "./AppBar";
 import ProductsTable from "../features/ProductsTable";
+import ProductDetails from "../features/ProductDetails";
+import ProductForm from "../features/ProductForm";
 
 function App() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -26,6 +28,8 @@ function App() {
     <div>
       <ResponsiveAppBar pages={["+ Add Product"]} />
       <ProductsTable products={products} productsPerPage={5} />
+      {products[0] && <ProductDetails product={products[0]} />}
+      <ProductForm />
     </div>
   );
 }
