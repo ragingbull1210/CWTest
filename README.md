@@ -14,7 +14,7 @@ The application uses the **CQRS CLEAN ARCHITECTURE PATTERN** on the server side.
 # Instructions to run
 1. Clone Repository
 2. Install .NET 6 SDK: https://dotnet.microsoft.com/en-us/download/dotnet/6.0
-3. Install NodeJS 18 or above: https://nodejs.org/en/
+3. Install NodeJS 18 or above: https://nodejs.org/en/. Make sure you check npm version on Terminal to see it's above 8. Other wise it might cause issues with react routing and redirect after launching the client app.
 4. Install MS SQL Server: https://www.microsoft.com/en-us/sql-server/sql-server-downloads
 5. Install SSMS: https://learn.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms?view=sql-server-ver16
 6. Instal Visual Studio 2022: https://visualstudio.microsoft.com/downloads/
