@@ -34,8 +34,14 @@ export default observer(function ProductsTable({
   const [page, setPage] = useState<number>(0);
   const [target, setTarget] = useState("");
   const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleOpen = (e: SyntheticEvent<HTMLButtonElement>) => {
+    setOpen(true);
+    setTarget(e.currentTarget.name);
+  }
+  const handleClose = (e: SyntheticEvent<HTMLButtonElement>) => {
+    setOpen(false);
+    setTarget('');
+  }
 
   const handleChangePage = (
     event: React.MouseEvent<HTMLButtonElement> | null,
@@ -61,7 +67,7 @@ export default observer(function ProductsTable({
           name="Add Product"
           marginTop={3}
           marginLeft={16}
-          // onClick={productStore.openForm}
+        // onClick={productStore.openForm}
         />
       </NavLink>
 
@@ -132,9 +138,9 @@ export default observer(function ProductsTable({
           <TableBody>
             {(sortedProducts.length > 0
               ? sortedProducts.slice(
-                  page * productsPerPage,
-                  page * productsPerPage + productsPerPage
-                )
+                page * productsPerPage,
+                page * productsPerPage + productsPerPage
+              )
               : sortedProducts
             ).map((product: Product) => (
               <TableRow

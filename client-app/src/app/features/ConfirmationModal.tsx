@@ -1,10 +1,11 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import Modal from "@mui/material/Modal";
 import { LoadingButton } from "@mui/lab";
 import { Product } from "../../models/product";
 import ActionButton from "./ActionButton";
 import DoneIcon from "@mui/icons-material/Done";
 import CloseIcon from "@mui/icons-material/Close";
+import { SyntheticEvent } from "react";
 
 const style = {
   position: "absolute" as "absolute",
@@ -21,7 +22,7 @@ const style = {
 interface Props {
   open: boolean;
   buttonName: string;
-  handleClose: () => void;
+  handleClose: (e: SyntheticEvent<HTMLButtonElement>) => void;
   handleClickAction: (e: any, id: string) => void;
   product: Product;
   loading: boolean;
@@ -39,9 +40,10 @@ export default function ConfirmationModal({
 }: Props) {
   return (
     <div>
+
       {/* <LoadingButton onClick={handleOpen}>Open modal</LoadingButton> */}
       <Modal
-        open={open}
+        open={open && target === product.id}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
@@ -73,11 +75,12 @@ export default function ConfirmationModal({
             >
               {buttonName}
             </LoadingButton>
-            <ActionButton
+            <Button
               color="secondary"
               name="Cancel"
+              variant="contained"
               onClick={handleClose}
-            />
+            >Cancel</Button>
           </Typography>
         </Box>
       </Modal>
