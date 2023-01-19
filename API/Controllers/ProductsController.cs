@@ -7,9 +7,11 @@ namespace API.Controllers
     public class ProductsController : BaseApiController
     {
         [HttpGet]
-        public async Task<ActionResult<List<Product>>> GetProducts()
+        public async Task<IActionResult> GetProducts()
         {
-            return await Mediator.Send(new List.Query());
+            var result = await Mediator.Send(new List.Query());
+
+            return HandleResult(result);
         }
 
         [HttpGet("{id}")]
@@ -23,7 +25,9 @@ namespace API.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateProduct(Product product)
         {
-            return Ok(await Mediator.Send(new Create.Command { Product = product }));
+            var result = await Mediator.Send(new Create.Command { Product = product });
+
+            return HandleResult(result);
         }
 
         [HttpPut("{id}")]

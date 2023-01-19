@@ -1,4 +1,5 @@
-﻿using Domain;
+﻿using Application.Core;
+using Domain;
 using FluentValidation;
 using MediatR;
 using Persistence;
@@ -7,7 +8,7 @@ namespace Application.Products
 {
     public class Create
     {
-        public class Command : IRequest
+        public class Command : IRequest<Result<Unit>>
         {
             public Product Product { get; set; }
         }
@@ -20,7 +21,7 @@ namespace Application.Products
             }
         }
 
-        public class Handler : IRequestHandler<Command>
+        public class Handler : IRequestHandler<Command, Result<Unit>>
         {
             private readonly DataContext _context;
 
@@ -29,15 +30,15 @@ namespace Application.Products
                 _context = context;
             }
 
-            public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
+            public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
                 _context.Products.Add(request.Product);
-                await _context.SaveChangesAsync();
+                var result = await _context.SaveChangesAsync() > 0;
 
-                return Unit.Value;
+                if (!result) return Result<Unit>.Failure("Failed to create activity");
+
+                return Result<Unit>.Success(Unit.Value);
             }
         }
-
-
     }
 }
