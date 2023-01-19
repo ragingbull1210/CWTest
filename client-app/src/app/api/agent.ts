@@ -1,7 +1,6 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { toast } from "react-toastify";
 import { Product } from "../../models/product";
-import { useNavigate } from "react-router-dom";
 
 const sleep = (delay: number) => {
   return new Promise((resolve) => {
@@ -17,7 +16,7 @@ axios.interceptors.response.use(
     return response;
   },
   (error: AxiosError) => {
-    const { data, status } = error.response!;
+    const { status } = error.response!;
     switch (status) {
       case 400:
         toast.error("bad request");
@@ -28,7 +27,7 @@ axios.interceptors.response.use(
       case 404:
         toast.error("not found");
         break;
-      case 405:
+      case 500:
         toast.error("server error");
         break;
     }

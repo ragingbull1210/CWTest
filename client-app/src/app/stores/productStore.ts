@@ -12,7 +12,7 @@ export default class ProductStore {
   selectedProduct: Product | undefined = undefined;
   editMode = false;
   loading = false;
-  loadingInitial = true;
+  loadingInitial = false;
 
   nameSortDirection: Props["directions"] = "asc";
   priceSortDirection: Props["directions"] = undefined;
