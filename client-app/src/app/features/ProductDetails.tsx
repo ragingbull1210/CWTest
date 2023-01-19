@@ -18,44 +18,46 @@ export default observer(function ProductDetails() {
 
   if (loadingInitial || !selectedProduct) return <LoadingComponent />;
   return (
-    <Card sx={{ minWidth: 275 }}>
-      <CardContent>
-        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-          Product Name
-        </Typography>
-        <Typography variant="h5" component="div">
-          {selectedProduct.name}
-        </Typography>
-        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-          Price
-        </Typography>
-        <Typography variant="h5" component="div">
-          ${selectedProduct.price}
-        </Typography>
-        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-          Type
-        </Typography>
-        <Typography variant="h5" component="div">
-          {selectedProduct.type}
-        </Typography>
-        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-          Active State
-        </Typography>
-        <Typography variant="h5" component="div">
-          {selectedProduct.active ? "Active" : "Inactive"}
-        </Typography>
-      </CardContent>
-      <CardActions>
-        <Link
-          to={`/manage/${selectedProduct.id}`}
-          style={{ textDecoration: "none" }}
-        >
-          <ActionButton color="info" name="Edit" />
-        </Link>
-        <Link to="/" style={{ textDecoration: "none" }}>
-          <ActionButton color="secondary" name="Cancel" />
-        </Link>
-      </CardActions>
-    </Card>
+    <div style={{ textAlign: "center" }}>
+      <Card sx={{ m: "0 auto", width: "75%" }}>
+        <CardContent>
+          <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+            Product Name
+          </Typography>
+          <Typography variant="h5" component="div">
+            {selectedProduct.name}
+          </Typography>
+          <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+            Price
+          </Typography>
+          <Typography variant="h5" component="div">
+            ${selectedProduct.price}
+          </Typography>
+          <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+            Type
+          </Typography>
+          <Typography variant="h5" component="div">
+            {selectedProduct.type}
+          </Typography>
+          <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+            Active State
+          </Typography>
+          <Typography variant="h5" component="div">
+            {selectedProduct.active ? "Active" : "Inactive"}
+          </Typography>
+        </CardContent>
+        <CardActions sx={{ textAlign: "center" }}>
+          <Link
+            to={`/manage/${selectedProduct.id}`}
+            style={{ textDecoration: "none" }}
+          >
+            <ActionButton color="info" name="Edit" />
+          </Link>
+          <Link to="/" style={{ textDecoration: "none" }}>
+            <ActionButton color="secondary" name="Cancel" />
+          </Link>
+        </CardActions>
+      </Card>
+    </div>
   );
 });

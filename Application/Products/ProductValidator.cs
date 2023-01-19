@@ -29,7 +29,7 @@ namespace Application.Products
                 .WithMessage("Please ensure product type belongs to either 'Books', 'Electronics', 'Food', 'Furniture' or 'Toys' category.");
 
             RuleFor(x => x.Active)
-                .NotEmpty()
+                .NotNull()
                 .Must(x => x == true || x == false)
                 .WithMessage("Please ensure the active field is a Boolean i.e. True or False");
         }

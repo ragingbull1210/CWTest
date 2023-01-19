@@ -178,6 +178,7 @@ export default class ProductStore {
   updateProduct = async (product: Product) => {
     this.loading = true;
     try {
+      //product.active = Boolean(product.active);
       await agent.Products.update(product);
       runInAction(() => {
         this.productRegistry.set(product.id, product);

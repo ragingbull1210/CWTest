@@ -19,6 +19,7 @@ import { LoadingButton } from "@mui/lab";
 import { useStore } from "../stores/store";
 import { observer } from "mobx-react-lite";
 import { NavLink } from "react-router-dom";
+import ConfirmationModal from "./ConfirmationModal";
 
 interface ProductsTableProps {
   productsPerPage: number;
@@ -32,6 +33,9 @@ export default observer(function ProductsTable({
 
   const [page, setPage] = useState<number>(0);
   const [target, setTarget] = useState("");
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   const handleChangePage = (
     event: React.MouseEvent<HTMLButtonElement> | null,
@@ -46,6 +50,7 @@ export default observer(function ProductsTable({
   ) => {
     setTarget(e.currentTarget.name);
     deleteProduct(id);
+    setOpen(false);
   };
 
   return (
@@ -151,14 +156,25 @@ export default observer(function ProductsTable({
                   <LoadingButton
                     color="error"
                     name={product.id}
-                    onClick={(e) => HandleProductDelete(e, product.id)}
+                    onClick={handleOpen}
                     variant="contained"
                     loading={loading && target === product.id}
                   >
                     Delete
                   </LoadingButton>
+                  <ConfirmationModal
+                    open={open}
+                    buttonName="Delete"
+                    handleClose={handleClose}
+                    handleClickAction={(e) =>
+                      HandleProductDelete(e, product.id)
+                    }
+                    product={product}
+                    loading={loading}
+                    target={target}
+                  />
                 </TableCell>
-                <TableCell>${product.price.toFixed(2)}</TableCell>
+                <TableCell>${Number(product.price).toFixed(2)}</TableCell>
                 <TableCell>{product.type}</TableCell>
                 <TableCell>
                   {product.active ? <DoneIcon /> : <CloseIcon />}
