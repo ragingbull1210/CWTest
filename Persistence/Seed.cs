@@ -34,7 +34,7 @@ namespace Persistence
                     Name = "Pizza",
                     Price = 15.20M,
                     Type = "Food",
-                    Active = true,
+                    Active = false,
                 },
                 new Product
                 {
@@ -62,7 +62,7 @@ namespace Persistence
                     Name = "Samsung Galaxy Smart Watch",
                     Price = 479.99M,
                     Type = "Electronics",
-                    Active = true,
+                    Active = false,
                 },
                 new Product
                 {
@@ -83,7 +83,7 @@ namespace Persistence
                     Name = "Lego Set",
                     Price = 34.99M,
                     Type = "Toys",
-                    Active = true,
+                    Active = false,
                 },
                  new Product
                 {
@@ -104,7 +104,7 @@ namespace Persistence
                     Name = "Cheeseburger",
                     Price = 8.90M,
                     Type = "Food",
-                    Active = true,
+                    Active = false,
                 },
                 new Product
                 {

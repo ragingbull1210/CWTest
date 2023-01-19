@@ -1,5 +1,6 @@
 using API.Extensions;
 using Application.Core;
+using Application.Middleware;
 using Application.Products;
 using FluentValidation.AspNetCore;
 using MediatR;
@@ -22,6 +23,8 @@ builder.Services.AddApplicationServices(builder.Configuration);
 var app = builder.Build();
 using var scope = app.Services.CreateScope();
 var services = scope.ServiceProvider;
+
+app.UseMiddleware<ExceptionMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
