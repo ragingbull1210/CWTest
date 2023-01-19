@@ -13,9 +13,11 @@ namespace API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Product>> GetProduct(Guid id)
+        public async Task<IActionResult> GetProduct(Guid id)
         {
-            return await Mediator.Send(new Details.Query { Id = id});
+            var result = await Mediator.Send(new Details.Query { Id = id});
+
+            return HandleResult(result);
         }
 
         [HttpPost]
