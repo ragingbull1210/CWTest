@@ -28,7 +28,7 @@ function App() {
           path="/products/:id"
           element={<ProductDetails />}
         />
-        <Route path="/errors" element={<TestErrors />} />
+        <Route path="/testerrors" element={<TestErrors />} />
         <Route path="/not-found" element={<NotFound />} />
       </Routes>
     </>

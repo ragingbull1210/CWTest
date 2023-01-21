@@ -2,6 +2,7 @@ import React from "react";
 import { CircularProgress, Container } from "@mui/material";
 
 export default function LoadingComponent() {
+  debugger;
   return (
     <Container
       sx={{

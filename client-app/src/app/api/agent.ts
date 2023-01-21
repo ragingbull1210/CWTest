@@ -1,4 +1,5 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
+import { Navigate, useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import { Product } from "../../models/product";
 
@@ -26,6 +27,7 @@ axios.interceptors.response.use(
         break;
       case 404:
         toast.error("not found");
+        window.location = "/not-found" as unknown as Location;
         break;
       case 500:
         toast.error("server error");

@@ -3,6 +3,7 @@ import axios from "axios";
 import { Box, Button, ButtonGroup, Container } from "@mui/material";
 
 export default function TestErrors() {
+  debugger;
   const baseUrl = "http://localhost:5000/api/";
 
   function handleNotFound() {
