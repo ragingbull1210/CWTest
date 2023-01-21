@@ -2,7 +2,6 @@ import { Box, Button, Typography } from "@mui/material";
 import Modal from "@mui/material/Modal";
 import { LoadingButton } from "@mui/lab";
 import { Product } from "../../models/product";
-import ActionButton from "./ActionButton";
 import DoneIcon from "@mui/icons-material/Done";
 import CloseIcon from "@mui/icons-material/Close";
 import { SyntheticEvent } from "react";
@@ -40,7 +39,6 @@ export default function ConfirmationModal({
 }: Props) {
   return (
     <div>
-
       {/* <LoadingButton onClick={handleOpen}>Open modal</LoadingButton> */}
       <Modal
         open={open && target === product.id}
@@ -80,7 +78,9 @@ export default function ConfirmationModal({
               name="Cancel"
               variant="contained"
               onClick={handleClose}
-            >Cancel</Button>
+            >
+              Cancel
+            </Button>
           </Typography>
         </Box>
       </Modal>
